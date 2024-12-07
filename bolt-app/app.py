@@ -1,5 +1,7 @@
 import os
 import logging
+import ip_helpers
+import time
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
@@ -15,7 +17,23 @@ app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 @app.message()
 def parse_message(logger, message, say):
     logger.info(message)
-    say(f"Hello, <@{message['user']}>!, you said: {message['text']}")
+    ips = ip_helpers.parse_for_ip(message['text'])
+    ip_count = len(ips)
+    if ip_count == 0:
+        logger.info("No IP addresses found in the message")
+    else:
+        # parsed_vt_data = []
+        say(f"{ip_count} IP Addresses were found in the message")
+        say(blocks=[{"type": "divider"}])
+        for ip in ips:
+            logger.info(f"IP address found: {ip}")
+            vt_data = ip_helpers.enrich_virustotal(logger, ip)
+            parsed_vt_data = ip_helpers.parse_vt_data(vt_data)
+            say(blocks=[ip_helpers.build_block_response(ip, parsed_vt_data)])
+            say(blocks=[{"type": "divider"}])
+            # parsed_vt_data.append(ip_helpers.parse_vt_data(vt_data))
+            
+        # block_response = ip_helpers.build_block_response(ip, parsed_vt_data)
 
 # Start your app
 if __name__ == "__main__":
