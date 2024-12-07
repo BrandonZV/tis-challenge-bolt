@@ -67,7 +67,7 @@ def build_block_response(ip, parsed_vt_data):
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": f"{ip} ({parsed_vt_data['network']}) - *Owner:* {parsed_vt_data['as_owner']}\n"
+            "text": f"*{ip}* ({parsed_vt_data['network']}) - *Owner:* {parsed_vt_data['as_owner']}\n"
                     f"*Country:* {parsed_vt_data['country']} - *Continent:* {parsed_vt_data['continent']}\n"
                     f"*Commmunity Score:* {parsed_vt_data['reputation']}\n"
                     f"*Last Analysis Stats:* {parsed_vt_data['last_analysis_stats']}\n"
