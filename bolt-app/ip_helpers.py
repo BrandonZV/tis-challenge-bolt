@@ -45,18 +45,19 @@ def defang(text):
 
 # Parse VirusTotal data
 def parse_vt_data(vt_data):
-    # https://www.virustotal.com/gui/ip-address/8.8.8.8/detection
-    parsed_data = {
-        "ip_address": vt_data["data"]["id"],
-        "network": vt_data["data"]["attributes"]["network"],
-        "country": vt_data["data"]["attributes"]["country"],
-        "continent": vt_data["data"]["attributes"]["continent"],
-        "reputation": vt_data["data"]["attributes"]["reputation"], # Community Score in the UI
-        "last_analysis_stats": vt_data["data"]["attributes"]["last_analysis_stats"],
-        "total_votes": vt_data["data"]["attributes"]["total_votes"],
-        "as_owner": vt_data["data"]["attributes"]["as_owner"],
-        "threat_severity_level": vt_data["data"]["attributes"]["threat_severity"]["threat_severity_level"],
-        "level_description": vt_data["data"]["attributes"]["threat_severity"]["level_description"],
+    # DONE Add checks to handle missing data
+    if "data" in vt_data and "attributes" in vt_data["data"]:
+        parsed_data = {
+        "ip_address": vt_data["data"].get("id"),
+        "network": vt_data["data"]["attributes"].get("network"),
+        "country": vt_data["data"]["attributes"].get("country"),
+        "continent": vt_data["data"]["attributes"].get("continent"),
+        "reputation": vt_data["data"]["attributes"].get("reputation"),
+        "last_analysis_stats": vt_data["data"]["attributes"].get("last_analysis_stats"),
+        "total_votes": vt_data["data"]["attributes"].get("total_votes"),
+        "as_owner": vt_data["data"]["attributes"].get("as_owner"),
+        "threat_severity_level": vt_data["data"]["attributes"].get("threat_severity", {}).get("threat_severity_level"),
+        "level_description": vt_data["data"]["attributes"].get("threat_severity", {}).get("level_description"),
     }
     return parsed_data
 
