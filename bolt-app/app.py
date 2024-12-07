@@ -35,6 +35,10 @@ def parse_message(logger, message, say):
             
         # block_response = ip_helpers.build_block_response(ip, parsed_vt_data)
 
+@app.action("button-action")
+def button_action(ack):
+    ack()
+
 # Start your app
 if __name__ == "__main__":
     SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()

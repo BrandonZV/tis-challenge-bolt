@@ -77,10 +77,11 @@ def build_block_response(ip, parsed_vt_data):
             "type": "button",
             "text": {
                 "type": "plain_text",
-                "text": "View in VirusTotal",
+                "text": "View in VirusTotal"
             },
             "value": "View in VirusTotal",
-            "url": f"https://www.virustotal.com/gui/ip-address/{parsed_vt_data['ip_address']}/detection"
+            "url": f"https://www.virustotal.com/gui/ip-address/{parsed_vt_data['ip_address']}/detection",
+            "action_id": "button-action"
         }
     }
     return block
