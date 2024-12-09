@@ -40,6 +40,8 @@ def send_request(method, url, headers, data=None):
 
 # defang IP address and URLs
 def defang(text):
+    if text is None:
+        return None
     defanged_text = text.replace(".", "[.]")
     return defanged_text
 
@@ -48,8 +50,8 @@ def parse_vt_data(vt_data):
     # DONE Add checks to handle missing data
     if "data" in vt_data and "attributes" in vt_data["data"]:
         parsed_data = {
-        "ip_address": vt_data["data"].get("id"),
-        "network": vt_data["data"]["attributes"].get("network"),
+        "ip_address": defang(vt_data["data"].get("id")),
+        "network": defang(vt_data["data"]["attributes"].get("network")),
         "country": vt_data["data"]["attributes"].get("country"),
         "continent": vt_data["data"]["attributes"].get("continent"),
         "reputation": vt_data["data"]["attributes"].get("reputation"),
