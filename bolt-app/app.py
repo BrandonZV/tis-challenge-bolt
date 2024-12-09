@@ -10,6 +10,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
+# TODO Add ability to use HTTP instead of socket mode
 
 # Initializes your app with your bot token and socket mode handler
 app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
@@ -23,17 +24,17 @@ def parse_message(logger, message, say):
         logger.info("No IP addresses found in the message")
     else:
         # parsed_vt_data = []
-        say(f"{ip_count} IP Addresses were found in the message")
-        say(blocks=[{"type": "divider"}])
-        for ip in ips:
-            logger.info(f"IP address found: {ip}")
-            vt_data = ip_helpers.enrich_virustotal(logger, ip)
-            parsed_vt_data = ip_helpers.parse_vt_data(vt_data)
-            say(blocks=[ip_helpers.build_block_response(ip, parsed_vt_data)])
+        if ip_count == 1:
+            say(f"{ip_count} IP Address was found in the message")
+        else
+            say(f"{ip_count} IP Addresses were found in the message")
             say(blocks=[{"type": "divider"}])
-            # parsed_vt_data.append(ip_helpers.parse_vt_data(vt_data))
-            
-        # block_response = ip_helpers.build_block_response(ip, parsed_vt_data)
+            for ip in ips:
+                logger.info(f"IP address found: {ip}")
+                vt_data = ip_helpers.enrich_virustotal(logger, ip)
+                parsed_vt_data = ip_helpers.parse_vt_data(vt_data)
+                say(blocks=[ip_helpers.build_block_response(ip, parsed_vt_data)])
+                say(blocks=[{"type": "divider"}])
 
 @app.action("button-action")
 def button_action(ack):
