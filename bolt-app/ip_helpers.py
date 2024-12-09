@@ -16,7 +16,7 @@ def enrich_virustotal(VT_TOKEN, logger, say, ip):
     url = base_url + ip
     headers = {
         "accept": "application/json",
-        "x-apikey": VT_TOKEN
+        "x-apikey": f"{VT_TOKEN}"
     }
     logger.info(url)
     logger.info(headers)

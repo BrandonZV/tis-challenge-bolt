@@ -29,13 +29,13 @@ def parse_message(logger, message, say):
             say(f"{ip_count} IP Address was found in the message")
         else:
             say(f"{ip_count} IP Addresses were found in the message")
+        say(blocks=[{"type": "divider"}])
+        for ip in ips:
+            logger.info(f"IP address found: {ip}")
+            vt_data = ip_helpers.enrich_virustotal(VT_TOKEN, logger, say, ip)
+            parsed_vt_data = ip_helpers.parse_vt_data(vt_data)
+            say(blocks=[ip_helpers.build_block_response(ip, parsed_vt_data)])
             say(blocks=[{"type": "divider"}])
-            for ip in ips:
-                logger.info(f"IP address found: {ip}")
-                vt_data = ip_helpers.enrich_virustotal(VT_TOKEN, logger, say, ip)
-                parsed_vt_data = ip_helpers.parse_vt_data(vt_data)
-                say(blocks=[ip_helpers.build_block_response(ip, parsed_vt_data)])
-                say(blocks=[{"type": "divider"}])
 
 @app.action("button-action")
 def button_action(ack):
