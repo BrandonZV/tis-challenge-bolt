@@ -1,7 +1,6 @@
 import os
 import logging
 import ip_helpers
-import time
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
