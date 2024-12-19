@@ -1,3 +1,4 @@
+import os
 import re
 import requests
 import time
@@ -10,12 +11,12 @@ def parse_for_ip(text):
 
 # Enrich IP with VirusTotal data
 # rate limit of 4 requests per minute
-def enrich_virustotal(logger, ip):
+def enrich_virustotal(VT_TOKEN, logger, say, ip):
     base_url = "https://www.virustotal.com/api/v3/ip_addresses/"
     url = base_url + ip
     headers = {
         "accept": "application/json",
-        "x-apikey": "00cda4011d0e13eda15114dd9f0db644175d7ecb49f256e9069158c0caa6d1c2"
+        "x-apikey": f"{VT_TOKEN}"
     }
     logger.info(url)
     logger.info(headers)
@@ -24,7 +25,8 @@ def enrich_virustotal(logger, ip):
 
     # DONE handle rate limit and other response codes with logging and error handling
     if status_code == 429:
-        logger.error(response)
+        logger.error("Rate limit reached. Waiting 60 seconds to try again.")
+        say(f"Rate limit reached. Waiting 60 seconds to try again.")
         time.sleep(60)
         status_code, response = send_request("GET", url, headers)
 
